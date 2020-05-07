@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                salida.setText("ITEM SELECCIONADO: "+lista.getItemAtPosition(position)+"");
+                salida.setText(">> "+lista.getItemAtPosition(position)+"");
                 n = position;
             }
         });
