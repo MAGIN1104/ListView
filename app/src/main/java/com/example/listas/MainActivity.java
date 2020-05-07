@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                salida.setText(">> "+lista.getItemAtPosition(position)+"");
+                salida.setText(">  "+lista.getItemAtPosition(position)+"");
                 n = position;
             }
         });
@@ -45,41 +45,58 @@ public class MainActivity extends AppCompatActivity {
     public void agregaItem(View view)
     {
         if(pos.getText().toString().isEmpty()) {
-            ListaArray.add(entrada.getText().toString() + "");
-            list_adaptador.notifyDataSetChanged();
-            entrada.setText("");
-            Toast.makeText(this, "Agregado, correctamente.", Toast.LENGTH_LONG).show();
+            if(!entrada.getText().toString().isEmpty()){
+                ListaArray.add( entrada.getText().toString() + "");
+                list_adaptador.notifyDataSetChanged();
+                entrada.setText("");
+                salida.setText("");
+                Toast.makeText(this, "Agregado correctamente.", Toast.LENGTH_SHORT).show();
+                n=-1;
+            }else{
+                Toast.makeText(this, "Para agregar Item. Inserte datos en \"New Item\".", Toast.LENGTH_LONG).show();
+            }
         }else if(Integer.parseInt(pos.getText().toString()) < ListaArray.size()){
             ListaArray.add( Integer.parseInt(pos.getText().toString()),entrada.getText().toString()+"");
             list_adaptador.notifyDataSetChanged();
-            Toast.makeText(this, "Nuevo elemento Insertado en la pos " + pos.getText().toString()+".", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Nuevo elemento Insertado en la pos " + pos.getText().toString()+".", Toast.LENGTH_SHORT).show();
             entrada.setText("");
+            salida.setText("");
             pos.setText("");
+            n=-1;
         }
 
     }
     public void eliminarItem(View view){
         //ListaArray.set(n,"");
-        if(ListaArray.size() != 0 || salida.toString()!="") {
-            ListaArray.remove(n);
-            list_adaptador.notifyDataSetChanged();
-            Toast.makeText(this, "Elemento eliminado.", Toast.LENGTH_LONG).show();
-            salida.setText("");
+        if(ListaArray.size() != 0) {
+           if(salida.toString()!="" && n>(-1)){
+               ListaArray.remove(n);
+               list_adaptador.notifyDataSetChanged();
+               Toast.makeText(this, "Elemento eliminado.", Toast.LENGTH_SHORT).show();
+               salida.setText("");
+           }else{
+               Toast.makeText(this, "Debes seleccionar un elemento de la lista.", Toast.LENGTH_SHORT).show();
+           }
         }else{
-            Toast.makeText(this, "La lista esta vacia.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "La lista esta vacia.", Toast.LENGTH_SHORT).show();
         }
     }
     public void modificarItem(View view)
     {
-        if(salida.toString() != ""){
-                ListaArray.remove(n);
-                ListaArray.add(n,entrada.getText().toString()+"");
-                list_adaptador.notifyDataSetChanged();
-                entrada.setText("");
-                salida.setText("");
-                Toast.makeText(this, "Elemento editado.", Toast.LENGTH_LONG).show();
+        if(ListaArray.size() != 0){
+                if(salida.toString() != "" && n>(-1)){
+                    ListaArray.remove(n);
+                    ListaArray.add(n,entrada.getText().toString()+"");
+                    list_adaptador.notifyDataSetChanged();
+                    entrada.setText("");
+                    salida.setText("");
+                    Toast.makeText(this, "Elemento editado.", Toast.LENGTH_SHORT).show();
+                    n=-1;
+                }else{
+                    Toast.makeText(this, "Debes seleccionar un elemento de la lista.", Toast.LENGTH_SHORT).show();
+                }
         }else{
-            Toast.makeText(this, "Seleccione un Item para editar.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Lista Vacia.", Toast.LENGTH_SHORT).show();
         }
     }
 }
